@@ -79,7 +79,7 @@ void setup() {
 
     delay(noteDuration);
 
-    noTone(3);
+    noTone(12);
   }
 }
 
