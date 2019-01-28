@@ -1,9 +1,9 @@
 /*Property of Elf-Is Studios*/
 
-#define pinN 12
-#define pinE 11
-#define pinS 10
-#define pinW 9
+#define pinN 12 //R
+#define pinE 11 //B
+#define pinS 10 //Y
+#define pinW 9  //G
 
 #define xPin A0
 #define yPin A1
@@ -13,6 +13,7 @@
 
 boolean grid[7][7][4];
 boolean moved = false;
+boolean finished = false;
 
 int starts[4][2] = {
   {0, 0},
@@ -24,6 +25,28 @@ int starts[4][2] = {
 int finish[2] = {6, 6};
 int coords[2] = {0, 0};
 int last[2];
+
+int melody[8] = {
+  293.66,
+  293.66,
+  293.66,
+  293.66,
+  329.63,
+  293.66,
+  329.63,
+  369.99
+};
+
+int durations[8] = {
+  200,
+  100,
+  100,
+  200,
+  200,
+  200,
+  200,
+  800
+};
 
 boolean easyGrid[7][7][4] = {{ //row,col - N,E,S,W
     {false, true, true, false}, //0,0
@@ -132,15 +155,17 @@ void setup() {
   Serial.begin(9600);
 
   memcpy(grid, easyGrid, sizeof(grid));
-  int start = 0;//rand() % 4;
+  int start = rand() % 4;
   memcpy(coords, starts[start], sizeof(coords));
-  //  coords[0] = starts[start][0];
-  //  coords[1] = starts[start][1];
 
   pinMode(pinN, OUTPUT);
   pinMode(pinE, OUTPUT);
   pinMode(pinS, OUTPUT);
   pinMode(pinW, OUTPUT);
+
+  pinMode(swPin, INPUT);
+  digitalWrite(swPin, HIGH);
+
 
 }
 
@@ -149,6 +174,14 @@ void loop() {
 
   moved = false;
 
+
+  if (digitalRead(swPin) == LOW) {
+    int start = rand() % 4;
+    memcpy(coords, starts[start], sizeof(coords));
+    finished = false;
+    delay(200);
+  }
+
   switch (pos(analogRead(xPin))) {
     case 'H':
       if (path(3)) {
@@ -156,7 +189,6 @@ void loop() {
         delay(500);
       }
       else {
-        Serial.println("Failed");
         tone(buzzPin, 50);
         delay(200);
         noTone(buzzPin);
@@ -169,7 +201,6 @@ void loop() {
         delay(500);
       }
       else {
-        Serial.println("Failed");
         tone(buzzPin, 50);
         delay(200);
         noTone(buzzPin);
@@ -185,7 +216,6 @@ void loop() {
           delay(500);
         }
         else {
-          Serial.println("Failed");
           tone(buzzPin, 50);
           delay(200);
           noTone(buzzPin);
@@ -198,7 +228,6 @@ void loop() {
           delay(500);
         }
         else {
-          Serial.println("Failed");
           tone(buzzPin, 50);
           delay(200);
           noTone(buzzPin);
@@ -207,8 +236,14 @@ void loop() {
     }
   }
 
-  if (coords[0] == finish[0] && coords[1] == finish[1]) {
-    tone(buzzPin, 400);
+  if (coords[0] == finish[0] && coords[1] == finish[1] && !finished) {
+    finished = true;
+    for (int i = 0; i < 8; i++) {
+      tone(buzzPin, melody[i]);
+      delay(durations[i] - 20);
+      noTone(buzzPin);
+      delay(20);
+    }
   }
 
 
