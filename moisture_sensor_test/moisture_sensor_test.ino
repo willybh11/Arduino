@@ -1,10 +1,19 @@
+// use a servo to physically connect the pins: make a mechanical tri-state buffer
+#include <Servo.h>
+
+Servo myservo;
 
 void setup() {
   Serial.begin(9600);
+//  myservo.attach(2);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  digitalWrite(1,HIGH);
+  digitalWrite(2,LOW);
+}
+
+void printSensorOutputs() {
   Serial.print("Sensor 1:");
   Serial.println(analogRead(A1));
   Serial.print("Sensor 2:");
