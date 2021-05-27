@@ -1,6 +1,5 @@
 #include <DS3231.h>
 #include <Wire.h>
-#define buz 10
 
 RTClib RTC;
 DateTime now;
@@ -9,8 +8,7 @@ DS3231 Clock;
 bool alarming = false;
 
 void setup() {
-  pinMode(buz, OUTPUT);
-  //  Serial.begin(9600);
+//  Serial.begin(9600);
   Wire.begin();
 
   //  SetTime();
@@ -20,23 +18,20 @@ void loop() {
   delay(1000);
   now = RTC.now();
 
-  //  Serial.print(now.year(), DEC);
-  //  Serial.print('/');
-  //  Serial.print(now.month(), DEC);
-  //  Serial.print('/');
-  //  Serial.println(now.day(), DEC);
-  //  Serial.setCursor(0, 1);
-  //    Serial.print(now.hour(), DEC);
-  //    Serial.print(':');
-  //    Serial.print(now.minute(), DEC);
-  //  Serial.print(':');
-  //  Serial.print(now.second(), DEC);
-  //  Serial.println();
+//  Serial.print(now.year(), DEC);
+//  Serial.print('/');
+//  Serial.print(now.month(), DEC);
+//  Serial.print('/');
+//  Serial.println(now.day(), DEC);
+//  Serial.print(now.hour(), DEC);
+//  Serial.print(':');
+//  Serial.print(now.minute(), DEC);
+//  Serial.print(':');
+//  Serial.print(now.second(), DEC);
+//  Serial.println();
 
-  if ( now.hour() == 6 && now.minute() == 50 && now.second() == 0)
+  if ( now.hour() == 22 && now.minute() == 34 && now.second() == 0)
     alarming = true;
-
-  //    Serial.println(analogRead(A0));
 
   if (alarming) {
     Buzzer();
@@ -45,13 +40,6 @@ void loop() {
 }
 
 void Buzzer() {
-  //    Serial.println("buzzing!");
-  //  tone(A1, 200, 500);
-  //  delay(666);
-  //  tone(A1, 350, 500);
-  //  delay(667);
-  //  tone(A1, 200, 500);
-  //  delay(667);
   for (int i = 0; i < 2; i++) {
     tone(A1, 440, 200);
     delay(200);
